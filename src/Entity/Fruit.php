@@ -12,18 +12,18 @@ class Fruit
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private int $id;
+    private ?int $id;
 
     #[ORM\Column(length: 255)]
-    private string $name;
+    private ?string $name;
 
     #[ORM\ManyToOne(inversedBy: 'fruits')]
     #[ORM\JoinColumn(nullable: false)]
-    private Genus $genus;
+    private ?Genus $genus;
 
     #[ORM\ManyToOne(inversedBy: 'fruits')]
     #[ORM\JoinColumn(nullable: false)]
-    private Family $family;
+    private ?Family $family;
 
     #[ORM\ManyToOne(inversedBy: 'fruits')]
     #[ORM\JoinColumn(nullable: false)]
@@ -40,7 +40,7 @@ class Fruit
         return $this->id;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -52,7 +52,7 @@ class Fruit
         return $this;
     }
 
-    public function getGenus(): Genus
+    public function getGenus(): ?Genus
     {
         return $this->genus;
     }
@@ -64,7 +64,7 @@ class Fruit
         return $this;
     }
 
-    public function getFamily(): Family
+    public function getFamily(): ?Family
     {
         return $this->family;
     }
@@ -76,7 +76,7 @@ class Fruit
         return $this;
     }
 
-    public function getFrOrder(): Order
+    public function getFrOrder(): ?Order
     {
         return $this->frOrder;
     }
@@ -106,7 +106,7 @@ class Fruit
         $this->createdAt = new \DateTimeImmutable();
     }
 
-    public function getNutriotions(): array
+    public function getNutriotions(): ?array
     {
         return $this->nutriotions;
     }

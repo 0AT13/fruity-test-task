@@ -1,0 +1,7 @@
+{% extends '@email/default/notification/body.html.twig' %}
+
+{% block content %}
+    {% for fruit in fruits %}
+        {% include 'emails/fruit_template.html.twig' with { fruit } %}
+    {% endfor %}
+{% endblock %}

@@ -38,4 +38,14 @@ class FruitRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function findOneByName(string $value): ?Fruit
+    {
+        return $this->createQueryBuilder('o')
+            ->andWhere('o.name = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

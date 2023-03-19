@@ -1,0 +1,12 @@
+<container>
+    Name: {{ fruit.name }}<br/>
+    Genus: {{ fruit.genus.name }}<br/>
+    Family: {{ fruit.family.name }}<br/>
+    Order: {{ fruit.frOrder.name }}<br/>
+
+    Nutrition:<br/>
+    {% for key, nutrition in fruit.nutriotions %}
+        {{ key|capitalize  }}: {{ nutrition }}<br/>
+     {% endfor %}
+</container>
+
