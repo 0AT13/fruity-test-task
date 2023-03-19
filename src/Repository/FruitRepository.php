@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Fruit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -16,6 +17,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class FruitRepository extends ServiceEntityRepository
 {
+    const ITEM_PER_PAGE = 10;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Fruit::class);
@@ -45,7 +48,17 @@ class FruitRepository extends ServiceEntityRepository
             ->andWhere('o.name = :val')
             ->setParameter('val', $value)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
+    }
+
+    public function getPaginator(int $offset)
+    {
+        $query = $this->createQueryBuilder('c')
+            ->orderBy('c.createdAt', 'DESC')
+            ->setMaxResults(self::ITEM_PER_PAGE)
+            ->setFirstResult($offset * self::ITEM_PER_PAGE)
+            ->getQuery();
+
+        return new Paginator($query);
     }
 }

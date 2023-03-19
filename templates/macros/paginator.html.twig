@@ -1,0 +1,40 @@
+{% macro pagination(total, current, path, nearbyPagesLimit = 4) %}
+    {% apply spaceless %}
+        {% if total > 1 %}
+            <div class="row">
+                <div class="col">
+                    <div class="pagination-area">
+                        {% if current > 1 %}
+                            <a class="prev page-numbers" href="{{ path(path, { offset: current - 1 }) }}">Prev</a>
+                        {% endif %}
+
+                        {% for i in 1..total %}
+                            {% if 0 == (current - nearbyPagesLimit) - loop.index %}
+                                <a class="page-numbers" href="{{ path(path, { offset: 1 }) }}">1</a>
+                                {% if 1 != loop.index %}
+                                    <span class="page-numbers">...</span>
+                                {% endif %}
+                            {% elseif 0 == (current + nearbyPagesLimit) - loop.index and (current + nearbyPagesLimit) < total %}
+                                <span class="page-numbers">...</span>
+                            {% elseif 0 < (current - nearbyPagesLimit) - loop.index %}
+                            {% elseif 0 > (current + nearbyPagesLimit) - loop.index %}
+                            {% else %}
+                                {% if current == loop.index %}
+                                    <span class="page-numbers current" aria-current="page">{{ loop.index }}</span>
+                                {% else %}
+                                    <a class="page-numbers" href="{{ path(path, { offset: loop.index }) }}">{{ loop.index }}</a>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if current != total  and (current + nearbyPagesLimit) < total %}
+                            <a class="page-numbers" href="{{ path(path, { offset: total}) }}">{{ total }}</a>
+                        {% endif %}
+                        {% if current < total %}
+                            <a class="next page-numbers" href="{{ path(path, { offset: current + 1 }) }}">Next</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endapply %}
+{% endmacro %}

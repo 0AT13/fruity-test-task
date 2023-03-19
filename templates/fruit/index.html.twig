@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fruits!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+{% import "macros/paginator.html.twig" as paginator %}
+
+<div class="example-wrapper">
+    <h1>Fruits</h1>
+
+    {% if fruits|length > 0 %}
+        <div>
+            {% for fruit in fruits %}
+                <p>Name: {{ fruit.name }}</p>
+            {% endfor %}
+        </div>
+        {{ paginator.pagination(total, current, 'app_fruit') }}
+    {% else %}
+    <div>
+        There no fruits... At least for now!
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
