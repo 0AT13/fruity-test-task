@@ -17,7 +17,7 @@ class FruitController extends AbstractController
     {
         $query = $request->query;
 
-        $offset = max(1, $query->getInt('offset', 1));
+        $offset = $query->getInt('offset', 1);
         $paginator = $fruitRepository->getPaginator($offset - 1, $query);
         $total = count($fruitRepository->getPaginator($offset - 1, $query, true)) / FruitRepository::ITEM_PER_PAGE;
 

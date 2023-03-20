@@ -16,7 +16,5 @@ import 'bootstrap';
 import './bootstrap';
 
 $('#familyClearButton').on('click', function(event) {
-    event.preventDefault();
     $('#familyPicker').val('');
-    $(this).trigger('submit');
 })
