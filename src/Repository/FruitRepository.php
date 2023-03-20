@@ -6,6 +6,7 @@ use App\Entity\Fruit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\InputBag;
 
 /**
  * @extends ServiceEntityRepository<Fruit>
@@ -51,12 +52,27 @@ class FruitRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function getPaginator(int $offset)
+    public function getPaginator(int $offset, InputBag $params, bool $getAllResults = false)
     {
-        $query = $this->createQueryBuilder('c')
-            ->orderBy('c.createdAt', 'DESC')
-            ->setMaxResults(self::ITEM_PER_PAGE)
-            ->setFirstResult($offset * self::ITEM_PER_PAGE)
+        $query = $this->createQueryBuilder('c');
+
+        if (!empty($params->getIterator()->getArrayCopy())) {
+            foreach ($params->getIterator() as $key => $item) {
+                if (!empty($item) && $key !== 'offset') {
+                    $query = $query->andWhere('c.' . $key . ' = :' . $key)
+                        ->setParameter($key, $item);
+                }
+            }
+        };
+
+        $query = $query->orderBy('c.createdAt', 'DESC');
+
+        if (!$getAllResults) {
+            $query = $query->setMaxResults(self::ITEM_PER_PAGE)
+                ->setFirstResult($offset * self::ITEM_PER_PAGE);
+        }
+
+        $query = $query
             ->getQuery();
 
         return new Paginator($query);

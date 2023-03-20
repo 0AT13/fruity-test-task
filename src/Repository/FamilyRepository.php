@@ -44,7 +44,14 @@ class FamilyRepository extends ServiceEntityRepository
             ->andWhere('o.name = :val')
             ->setParameter('val', $value)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
+    }
+
+    public function findAllForSelect(): array
+    {
+        return $this->createQueryBuilder('o')
+            ->addOrderBy('o.name')
+            ->getQuery()
+            ->getArrayResult();
     }
 }
