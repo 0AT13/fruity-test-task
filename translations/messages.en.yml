@@ -47,8 +47,8 @@ fruits:
   attributes:
     name: "Name"
     family: "Family"
-    group: "Group"
     order: "Order"
+    genus: "Genus"
     nutritions: 
       label: "Nutritions"
       carbohydrates: "Carbohydrates"

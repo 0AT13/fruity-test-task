@@ -1,12 +1,7 @@
 <container>
-    {{'fruit.attributes.name'|trans}}: {{ fruit.name }}<br/>
-    {{'fruit.attributes.genus'|trans}}: {{ fruit.genus.name }}<br/>
-    {{'fruit.attributes.family'|trans}}: {{ fruit.family.name }}<br/>
-    {{'fruit.attributes.order'|trans}}: {{ fruit.frOrder.name }}<br/>
-
-    {{'fruit.attributes.nutritions.label'|trans}}:<br/>
-    {% for key, nutrition in fruit.nutriotions %}
-        {{ key|capitalize  }}: {{ nutrition }}<br/>
-     {% endfor %}
+	{{'fruits.attributes.name'|trans}}: {{ fruit.name }},
+	{{'fruits.attributes.genus'|trans}}: {{ fruit.genus.name }}<br>
+	{{'fruits.attributes.family'|trans}} : {{ fruit.family.name }},
+	{{'fruits.attributes.order'|trans}} : {{ fruit.frOrder.name }}
+    <hr>
 </container>
-

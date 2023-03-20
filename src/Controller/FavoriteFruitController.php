@@ -54,10 +54,10 @@ class FavoriteFruitController extends AbstractController
 
                     $favoriteFruitRepository->save($favorite, true);
 
-                    $this->addFlash('success', $this->translator->trans('backend.favorite_fruits.added'));
+                    $this->addFlash('success', $this->translator->trans('backend.controllers.favorite_fruits.added'));
                 }
             } else {
-                $this->addFlash('danger', $this->translator->trans('backend.favorite_fruits.limit'));
+                $this->addFlash('danger', $this->translator->trans('backend.controllers.favorite_fruits.limit'));
             }
         } else {
             $this->addFlash('danger', $this->translator->trans('backend.utils.incorect_data'));
@@ -74,7 +74,7 @@ class FavoriteFruitController extends AbstractController
         if (($favorite = $favoriteFruitRepository->findOneBy(['fruit' => $fruit])) != null) {
             $favoriteFruitRepository->remove($favorite, true);
 
-            $this->addFlash('success', $this->translator->trans('backend.favorite_fruits.removed'));
+            $this->addFlash('success', $this->translator->trans('backend.controllers.favorite_fruits.removed'));
         } else {
             $this->addFlash('danger', $this->translator->trans('backend.utils.incorect_data'));
         }
