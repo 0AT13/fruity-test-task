@@ -3,14 +3,20 @@
 namespace App\Helpers;
 
 use App\Entity\Fruit;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class NutritionSummary
 {
-    public static function summary(Paginator $paginator): array
+    /**
+     * Summary the fruits nutriotion by nutriotion key
+     * 
+     * @param array $data array of Fruits
+     * 
+     * @return array
+     */
+    public static function summary(array $data): array
     {
         $nutritionSummary = [];
-        foreach ($paginator->getIterator()->getArrayCopy() as $fruit) {
+        foreach ($data as $fruit) {
             /** @var Fruit $fruit */
             foreach ($fruit->getNutriotions() as $key => $nutrition) {
                 if (empty($nutritionSummary[$key])) {

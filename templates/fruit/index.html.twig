@@ -1,79 +1,98 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	Fruits!
+	{{'frontend.pages.fruits.title'|trans}}
 {% endblock %}
 
 {% block body %}
 	{% import "macros/paginator.html.twig" as paginator %}
 
-	<div class="example-wrapper">
-		<h1>Fruits</h1>
+	<h1>
+		{{'frontend.pages.fruits.header'|trans}}
+	</h1>
 
-		<form action="{{ path('app_fruit') }}">
-			<div class="input-group mb-3">
-				<input id="fname" class="form-control" type="text" name="name" placeholder="Filter by Name" {% if query.name is defined and query.name != "" %} value={{ query.name }} {% endif %}>
-				<button class="btn btn-success" type="submit">Search</button>
-			</div>
-			<div class="input-group mb-3">
-				<select id="familyPicker" class="form-select" onchange="this.form.submit()" data-clear-button="true" data-filter="true" aria-label="Default select example" name="family">
-					{% if query.family is not defined or query.family is empty %}
-						<option value="" selected>Select Family</option>
-					{% endif %}
-					{% for option in familyOptions %}
-						<option value="{{ option.id }}" {% if query.family is defined and query.family == option.id %} selected {% endif %}>
-							{{ option.name }}
-						</option>
-					{% endfor %}
-				</select>
-				<button id="familyClearButton" class="btn btn-outline-secondary">Clear</button>
-			</div>
-		</form>
-
-		<div class="mt-5">
-			{% if fruits|length > 0 %}
-				<table class="table">
-					<thead>
-						<tr>
-							<th scope="col">#</th>
-							<th scope="col">Genus</th>
-							<th scope="col">Name</th>
-							<th scope="col">Family</th>
-							<th scope="col">Order</th>
-							<th scope="col">Carbohydrates</th>
-							<th scope="col">Protein</th>
-							<th scope="col">Fat</th>
-							<th scope="col">Calories</th>
-							<th scope="col">Sugar</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for fruit in fruits %}
-							<tr>
-								<th scope="row">{{ fruit.id }}</th>
-								<td>{{ fruit.genus.name }}</td>
-								<td>{{ fruit.name }}</td>
-								<td>{{ fruit.family.name }}</td>
-								<td>{{ fruit.frOrder.name }}</td>
-								{% for key, nutriotion in fruit.nutriotions %}
-									<td>{{ nutriotion }}</td>
-								{% endfor %}
-							</tr>
-						{% endfor %}
-						<tr>
-							<td colspan="5">Summary</td>
-							{% for nSum in nutritionSummary %}
-								<td>{{ nSum }}</td>
-							{% endfor %}
-						</tr>
-					</tbody>
-				</table>
-				{{ paginator.pagination(total, current, 'app_fruit', query) }}
-			{% else %}
-				<div>
-					There no fruits... At least for now!
-				</div>
-			{% endif %}
+	<form action="{{ path('app_fruit') }}" class="row">
+		<div class="input-group mb-3 col">
+			<input id="fname" class="form-control" type="text" name="name" placeholder="Filter by Name" {% if query.name is defined and query.name != "" %} value={{ query.name }} {% endif %}>
+			<button class="btn btn-success" type="submit">
+				{{'frontend.buttons.search.text'|trans}}
+			</button>
 		</div>
+		<div class="input-group mb-3 col">
+			<select id="familyPicker" class="form-select" onchange="this.form.submit()" data-clear-button="true" data-filter="true" aria-label="Default select example" name="family">
+				{% if query.family is not defined or query.family is empty %}
+					<option value="" selected>
+						{{'frontend.buttons.select_family.text'|trans}}
+					</option>
+				{% endif %}
+				{% for option in familyOptions %}
+					<option value="{{ option.id }}" {% if query.family is defined and query.family == option.id %} selected {% endif %}>
+						{{ option.name }}
+					</option>
+				{% endfor %}
+			</select>
+			<button id="familyClearButton" class="btn btn-outline-secondary">
+				{{'frontend.buttons.clear'|trans}}
+			</button>
+		</div>
+	</form>
+
+	<div class="table-responsive mt-2">
+		{% if fruits|length > 0 %}
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">{{'fruits.attributes.name'|trans}}</th>
+						<th scope="col">{{'fruits.attributes.family'|trans}}</th>
+						<th scope="col">{{'fruits.attributes.nutritions.carbohydrates'|trans}}</th>
+						<th scope="col">{{'fruits.attributes.nutritions.protein'|trans}}</th>
+						<th scope="col">{{'fruits.attributes.nutritions.fat'|trans}}</th>
+						<th scope="col">{{'fruits.attributes.nutritions.calories'|trans}}</th>
+						<th scope="col">{{'fruits.attributes.nutritions.sugar'|trans}}</th>
+						<th scope="col">{{'frontend.utils.action'|trans}}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for fruit in fruits %}
+						<tr>
+							<th scope="row">{{ fruit.id }}</th>
+							<td>{{ fruit.name }}</td>
+							<td>{{ fruit.family.name }}</td>
+							{% for nutriotion in fruit.nutriotions %}
+								<td>{{ nutriotion }}</td>
+							{% endfor %}
+							{% if fruit.favorites is empty %}
+								<td>
+									<a href="{{ path('app_favorite_add', { fruitId: fruit.id }) }}" class="btn btn-success">
+										{{'frontend.buttons.add'|trans}}
+									</a>
+								</td>
+							{% else %}
+								<td>
+									<a href="{{ path('app_favorite_remove', { fruitId: fruit.id }) }}" class="btn btn-danger">
+										{{'frontend.buttons.remove'|trans}}
+									</a>
+								</td>
+							{% endif %}
+						</tr>
+					{% endfor %}
+					<tr>
+						<td colspan="3">
+							{{'frontend.utils.summary'|trans}}
+						</td>
+						{% for nSum in nutritionSummary %}
+							<td>{{ nSum }}</td>
+						{% endfor %}
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+			{{ paginator.pagination(total, current, 'app_fruit', query) }}
+		{% else %}
+			<div>
+				{{'frontend.utils.no_fruits'|trans}}
+			</div>
+		{% endif %}
 	</div>
 {% endblock %}

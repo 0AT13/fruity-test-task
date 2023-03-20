@@ -2,13 +2,18 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\PrePersistCreatedAtTrait;
 use App\Repository\FruitRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FruitRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Fruit
 {
+    use PrePersistCreatedAtTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -34,6 +39,14 @@ class Fruit
 
     #[ORM\Column]
     private array $nutriotions = [];
+
+    #[ORM\OneToMany(mappedBy: 'fruit', targetEntity: FavoriteFruit::class)]
+    private Collection $favorite;
+
+    public function __construct()
+    {
+        $this->favorite = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -100,12 +113,6 @@ class Fruit
         return $this;
     }
 
-    #[ORM\PrePersist]
-    public function setCreatedAtValue(): void
-    {
-        $this->createdAt = new \DateTimeImmutable();
-    }
-
     public function getNutriotions(): ?array
     {
         return $this->nutriotions;
@@ -114,6 +121,36 @@ class Fruit
     public function setNutriotions(array $nutriotions): self
     {
         $this->nutriotions = $nutriotions;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FavoriteFruit>
+     */
+    public function getFavorites(): Collection
+    {
+        return $this->favorite;
+    }
+
+    public function addFavorite(FavoriteFruit $favoriteFruit): self
+    {
+        if (!$this->favorite->contains($favoriteFruit)) {
+            $this->favorite->add($favoriteFruit);
+            $favoriteFruit->setFruit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(FavoriteFruit $favoriteFruit): self
+    {
+        if ($this->favorite->removeElement($favoriteFruit)) {
+            // set the owning side to null (unless already changed)
+            if ($favoriteFruit->getFruit() === $this) {
+                $favoriteFruit->setFruit(null);
+            }
+        }
 
         return $this;
     }

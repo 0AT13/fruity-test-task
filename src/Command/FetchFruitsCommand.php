@@ -19,6 +19,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsCommand(
     name: 'app:fetch-fruits',
@@ -30,6 +31,7 @@ class FetchFruitsCommand extends Command
         private HttpClientInterface $client,
         private EntityManagerInterface $entityManager,
         private MailerInterface $mailer,
+        private TranslatorInterface $translator,
         #[Autowire('%admin_email%')] private $adminEmail
     ) {
         parent::__construct();
@@ -38,7 +40,7 @@ class FetchFruitsCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('fruit', InputArgument::OPTIONAL, 'Which fruit to fetch', 'all');
+            ->addArgument('fruit', InputArgument::OPTIONAL, 'What fruit to fetch', 'all');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -57,7 +59,7 @@ class FetchFruitsCommand extends Command
             if (!isset($data[0])) {
                 if ($fruit = self::saveFruit($data)) {
                     $this->mailer->send((new NotificationEmail())
-                            ->subject('New Fruit has been added!')
+                            ->subject($this->translator->trans('emails.fruits.added.subject'))
                             ->htmlTemplate('emails/fruit_added_notification.html.twig')
                             ->from($this->adminEmail)
                             ->to($this->adminEmail)
@@ -74,7 +76,7 @@ class FetchFruitsCommand extends Command
 
                 if (!empty($fruits)) {
                     $this->mailer->send((new NotificationEmail())
-                            ->subject('New Fruit has been added!')
+                            ->subject($this->translator->trans('emails.fruits.multiple_added.subject'))
                             ->htmlTemplate('emails/fruits_added_notification.html.twig')
                             ->from($this->adminEmail)
                             ->to($this->adminEmail)
@@ -88,7 +90,7 @@ class FetchFruitsCommand extends Command
             $io->error($response->getContent());
         }
 
-        $io->success('Fruits fetched, you can check your email for list of new fruits added!');
+        $io->success($this->translator->trans('commands.fruits.add_success'));
 
         return Command::SUCCESS;
     }

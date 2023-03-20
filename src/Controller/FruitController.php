@@ -23,7 +23,7 @@ class FruitController extends AbstractController
 
         $familyOptions = $familyRepository->findAllForSelect();
 
-        $nutritionSummary = NutritionSummary::summary($paginator);
+        $nutritionSummary = NutritionSummary::summary($paginator->getIterator()->getArrayCopy());
 
         return $this->render('fruit/index.html.twig', [
             'fruits' => $paginator,

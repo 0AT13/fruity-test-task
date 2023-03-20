@@ -1,0 +1,62 @@
+backend:
+  utils:
+    incorrect_data: "Incorrect data"
+  controllers:
+    favorite_fruits:
+      added: "Fruit added to favorites!"
+      removed: "Fruit removed from favorites!"
+      limit: "You can have only 10 favorite Fruits"
+
+frontend:
+  pages:
+    favorite_fruits:
+      title: "Favorite Fruits!"
+      header: "Favorite Fruits"
+    fruits:
+      title: "Fruits"
+      header: "Fruits"
+  buttons:
+    remove: "Remove from favorite"
+    add: "Add to favorite"
+    search: 
+      text: "Search"
+      placeholder: 
+    select_family: 
+      text: "Select Family"
+      placeholder: 
+    clear: "Clear"
+    prev: "Prev"
+    next: "Next"
+  utils:
+    summary: "Summary"
+    no_fruits: "There no fruits... At least for now!"
+    action: "Action"
+
+commands:
+  fruits:
+    add_success: "Fruits fetched, you can check your email for list of new fruits added!"
+
+emails:
+  fruits:
+    added:
+      subject: "New Fruit has been added!"
+    multiple_added:
+      subject: "New Fruits has been added!"
+
+fruits:
+  attributes:
+    name: "Name"
+    family: "Family"
+    group: "Group"
+    order: "Order"
+    nutritions: 
+      label: "Nutritions"
+      carbohydrates: "Carbohydrates"
+      protein: "Protein"
+      fat: "Fat"
+      calories: "Calories"
+      sugar: "Sugar"
+
+favorite:
+  pages:
+    header: "Favorite Fruits"

@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{'frontend.pages.favorite_fruits.title'|trans}}
+{% endblock %}
+
+{% block body %}
+	<h1>
+		{{'frontend.pages.favorite_fruits.header'|trans}}
+	</h1>
+
+	<div class="table-responsive mt-2">
+		{% if fruits|length > 0 %}
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">{{'fruits.attributes.name'|trans}}</th>
+						<th scope="col">{{'fruits.attributes.family'|trans}}</th>
+						<th scope="col">{{'fruits.attributes.nutritions.carbohydrates'|trans}}</th>
+						<th scope="col">{{'fruits.attributes.nutritions.protein'|trans}}</th>
+						<th scope="col">{{'fruits.attributes.nutritions.fat'|trans}}</th>
+						<th scope="col">{{'fruits.attributes.nutritions.calories'|trans}}</th>
+						<th scope="col">{{'fruits.attributes.nutritions.sugar'|trans}}</th>
+						<th scope="col">{{'frontend.utils.action'|trans}}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for fruit in fruits %}
+						<tr>
+							<th scope="row">{{ fruit.id }}</th>
+							<td>{{ fruit.name }}</td>
+							<td>{{ fruit.family.name }}</td>
+							{% for key, nutriotion in fruit.nutriotions %}
+								<td>{{ nutriotion }}</td>
+							{% endfor %}
+							<td>
+								<a href="{{ path('app_favorite_remove', { fruitId: fruit.id }) }}" class="btn btn-danger">
+									{{'frontend.buttons.remove'|trans}}
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+					<tr>
+						<td colspan="3">
+							{{'frontend.utils.summary'|trans}}
+						</td>
+						{% for nSum in nutritionSummary %}
+							<td>{{ nSum }}</td>
+						{% endfor %}
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		{% else %}
+			<div>
+				{{'frontend.utils.no_fruits'|trans}}
+			</div>
+		{% endif %}
+	</div>
+{% endblock %}
