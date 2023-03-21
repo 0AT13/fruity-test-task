@@ -52,13 +52,12 @@ Run migrations:
 symfony console doctrine:migrations:migrate
 ```
 
-Run yarn:
+Run yarn or npm:
 ```sh
 yarn install
 yarn dev
-```
-Or npm:
-```sh
+
+npm install
 npm run dev
 ```
 
