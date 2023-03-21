@@ -2,6 +2,7 @@
 
 ## Requirements 
  - php: >= 8.1
+ - Symfony CLI
  - db: PostgreSQL 
  - yarn or npm
 
