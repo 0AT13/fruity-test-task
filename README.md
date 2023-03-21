@@ -25,7 +25,7 @@ symfony composer install
 In case you need to set up your own database connection or smpt server
 copy **.env** file to **.env.local**
 
-Set this environment variables in your **.env.local** file:
+Specify these variables with your settings in **.env.local** file:
 ```sh
 ## For Database
 POSTGRES_HOST=127.0.0.1
