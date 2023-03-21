@@ -43,6 +43,8 @@ MAILER_DSN=smtp://user:pass@smtp.example.com:port
 ```
 
 ### Default Setup
+Copy **docker-compose.override.yml.example** to **docker-compose.override.yml**
+
 Run docker for PostgreSQL Database and Mailcatcher, **in this case emails will not be sent to real email adress** (If you use both of your own database and SMTP server you can skip this step):
 ```sh
 docker-compose up -d
